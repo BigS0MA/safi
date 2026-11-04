@@ -2,7 +2,9 @@
 
 **برومبتات وسكيلز لشغلك بالعربي، من كاروسيلات motasem.ai. بكبسة نسخ أو تنزيل.**
 
-الموقع: **https://safi.motasem.ai** · الرقم اللي بالكاروسيل هو نفسه الرابط: `safi.motasem.ai/1`
+الموقع: **https://motasem.ai/safi** · الرقم اللي بالكاروسيل هو نفسه الرابط: `motasem.ai/safi/1`
+
+**النشر:** محتوى `site/` بينسخ لمجلد `safi/` بريبو موقع motasem.ai، وسطور `redirects_for_main_site.toml` بتنحط بآخر `netlify.toml` تبعه (عشان `/safi/1` يحوّل لـ `/safi/p/1/`). المسار بيتغيّر بـ `SAFI_BASE`.
 
 ## شو بالمكتبة
 

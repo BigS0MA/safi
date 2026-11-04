@@ -1,0 +1,41 @@
+# الصق هالسطور بآخر netlify.toml تبع موقع motasem.ai
+
+[[redirects]]
+  from = "/safi/1"
+  to = "/safi/p/1/"
+  status = 301
+
+[[redirects]]
+  from = "/safi/2"
+  to = "/safi/p/2/"
+  status = 301
+
+[[redirects]]
+  from = "/safi/3"
+  to = "/safi/p/3/"
+  status = 301
+
+[[redirects]]
+  from = "/safi/4"
+  to = "/safi/p/4/"
+  status = 301
+
+[[redirects]]
+  from = "/safi/5"
+  to = "/safi/p/5/"
+  status = 301
+
+[[redirects]]
+  from = "/safi/6"
+  to = "/safi/p/6/"
+  status = 301
+
+[[redirects]]
+  from = "/safi/7"
+  to = "/safi/p/7/"
+  status = 301
+
+[[redirects]]
+  from = "/safi/8"
+  to = "/safi/p/8/"
+  status = 301

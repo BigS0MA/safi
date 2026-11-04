@@ -11,6 +11,7 @@ Each item lives in items/<NN>-<slug>/ with:
 Short links: /<n> → /p/<n>/ (the number printed on the carousel).
 """
 import html
+import os
 import json
 import re
 import shutil
@@ -21,6 +22,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 SITE = ROOT / "site"
 REPO = "https://github.com/BigS0MA/safi"
+BASE = os.environ.get("SAFI_BASE", "/safi/")          # where the library lives: motasem.ai/safi/
+ORIGIN = os.environ.get("SAFI_ORIGIN", "https://motasem.ai")
 KIND = {"prompt": "برومبت", "trick": "حيلة", "skill": "سكيل", "block": "إعدادات", "guide": "دليل"}
 MONTHS = ["كانون الثاني", "شباط", "آذار", "نيسان", "أيار", "حزيران", "تموز", "آب", "أيلول",
           "تشرين الأول", "تشرين الثاني", "كانون الأول"]
@@ -117,24 +120,32 @@ const g=document.getElementById('go');if(g)g.addEventListener('submit',ev=>{ev.p
 """
 
 
+def rebase(h):
+    """absolute paths → under BASE; the motasem.ai logo goes to the main site."""
+    for a, b in (("url(/fonts/", f"url({BASE}fonts/"), ('href="/fonts/', f'href="{BASE}fonts/'), ('href="/favicon', f'href="{BASE}favicon'),
+                 ('href="/p/', f'href="{BASE}p/'), ("'/p/'", f"'{BASE}p/'"), ('href="/"', f'href="{BASE}"'), ("//ROOT//", "/")):
+        h = h.replace(a, b)
+    return h
+
+
 def page(title, desc, body, path="/"):
-    return f"""<!doctype html>
+    return rebase(f"""<!doctype html>
 <html lang="ar" dir="rtl"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{e(title)}</title>
 <meta name="description" content="{e(desc)}">
 <meta property="og:title" content="{e(title)}"><meta property="og:description" content="{e(desc)}">
-<meta property="og:type" content="website"><meta property="og:image" content="https://safi.motasem.ai/og.png"><meta property="og:locale" content="ar_JO">
+<meta property="og:type" content="website"><meta property="og:image" content="{ORIGIN}{BASE}og.png"><meta property="og:locale" content="ar_JO">
 <meta name="theme-color" content="#F2EFE8">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="/fonts/plex-arabic-bold.woff2" as="font" type="font/woff2" crossorigin>
 <style>{CSS}</style></head>
 <body><a class="skip" href="#main">تخطّى للمحتوى</a>
 <div class="wrap">
-<header class="top"><a class="brand" href="/">motasem.ai</a><a class="chip ar" href="/" style="text-decoration:none">صافي</a></header>
+<header class="top"><a class="brand" href="//ROOT//">motasem.ai</a><a class="chip ar" href="/" style="text-decoration:none">صافي</a></header>
 <main id="main">{body}</main>
 <footer><span>لقيت غلط أو عندك فكرة لعنصر جاي؟ احكيلي على انستغرام.</span><a class="brand" href="{REPO}">GitHub ↗</a></footer>
-</div><script>{JS}</script></body></html>"""
+</div><script>{JS}</script></body></html>""")
 
 
 def load_items():
@@ -213,8 +224,11 @@ def main():
     (SITE / "favicon.svg").write_text(
         '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" fill="#FF5A1F"/>'
         '<rect x="7" y="7" width="18" height="18" fill="none" stroke="#141414" stroke-width="3"/></svg>', encoding="utf-8")
-    redirects = "\n".join(f'/{it["n"]}  /p/{it["n"]}/  301' for it in items)
+    redirects = "\n".join(f'{BASE}{it["n"]}  {BASE}p/{it["n"]}/  301' for it in items)
     (SITE / "_redirects").write_text(redirects + "\n", encoding="utf-8")
+    # Netlify only reads redirects at the publish root, so the main site needs these lines:
+    toml = "".join(f'\n[[redirects]]\n  from = "{BASE}{it["n"]}"\n  to = "{BASE}p/{it["n"]}/"\n  status = 301\n' for it in items)
+    (ROOT / "redirects_for_main_site.toml").write_text("# الصق هالسطور بآخر netlify.toml تبع موقع motasem.ai\n" + toml, encoding="utf-8")
     (SITE / "404.html").write_text(page("مش موجود · صافي", "", '<h1>هالرقم <span class="hot">مش موجود</span> لسا.</h1>'
                                         '<p class="lede">يمكن الكاروسيل لسا ما نزل. <a href="/">شوف كل المكتبة</a>.</p>'), encoding="utf-8")
     print(f"✅ {len(items)} عنصر → {SITE}")
