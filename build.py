@@ -21,7 +21,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 SITE = ROOT / "site"
 REPO = "https://github.com/BigS0MA/safi"
-KIND = {"prompt": "برومبت", "trick": "حيلة", "skill": "سكيل", "block": "إعدادات"}
+KIND = {"prompt": "برومبت", "trick": "حيلة", "skill": "سكيل", "block": "إعدادات", "guide": "دليل"}
 MONTHS = ["كانون الثاني", "شباط", "آذار", "نيسان", "أيار", "حزيران", "تموز", "آب", "أيلول",
           "تشرين الأول", "تشرين الثاني", "كانون الأول"]
 
@@ -38,7 +38,7 @@ def e(s):
 def rich(s):
     """escape, keep Latin runs in order, «الـ AI» together."""
     s = e(s)
-    s = re.sub(r"(?<![&\w])([A-Za-z][A-Za-z0-9 .'’|/+\-]*[A-Za-z0-9])", r"<bdi>\1</bdi>", s)
+    s = re.sub(r"(?<![&A-Za-z0-9])([A-Za-z][A-Za-z0-9 .'’|/+\-]*[A-Za-z0-9])", r"<bdi>\1</bdi>", s)
     s = re.sub(r"(الـ|ال) (<bdi>)", r"\1&nbsp;\2", s)
     return re.sub(r"!([\u0600-\u06FF]+)", r'<bdi class="cmd" dir="rtl">!\1</bdi>', s)   # «!لخص» stays one unit
 

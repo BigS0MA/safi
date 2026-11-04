@@ -8,15 +8,23 @@
 
 | # | العنصر | النوع |
 |---|---|---|
-| 01 | [ملف Word عربي ما بيتخربط](items/01-arabic-word) | سكيل لـ Claude + برومبت لـ ChatGPT + تصليح يدوي |
-| 02 | [بطّل تكتب برومبتات طويلة: 8 اختصارات بالعربي](items/02-shortcuts) | بلوك إعدادات |
+| 01 | [ملف Word عربي ما بيتخربط](items/01-arabic-word) | سكيل + برومبت + تصليح يدوي |
+| 02 | [8 اختصارات بالعربي](items/02-shortcuts) | بلوك إعدادات |
+| 03 | [خليه يكتب بلهجتك](items/03-my-voice) | برومبت (خطوتين) |
+| 04 | [خليه ينتقدك بجد](items/04-be-honest) | بلوك إعدادات |
+| 05 | [عرض PowerPoint عربي ما بيتخربط](items/05-arabic-pptx) | سكيل + برومبت + تصليح يدوي |
+| 06 | [الفويس الطويل ← 3 سطور ورد جاهز](items/06-voice-notes) | برومبت |
+| 07 | [كتاب رسمي بالفصحى من حكيك العادي](items/07-official-letter) | سكيل + برومبت |
+| 08 | [قرار الـ 20 دولار: مجاني ولا مدفوع؟](items/08-twenty-dollars) | دليل |
 
-### سكربت تصليح ملفات Word العربية (بلا Claude)
+### سكربتات بتشتغل لحالها (بلا Claude)
 ```bash
-pip install python-docx
-python3 items/01-arabic-word/skill/scripts/arabic_docx.py ملفك.docx
+pip install python-docx python-pptx
+python3 items/01-arabic-word/skill/scripts/arabic_docx.py ملفك.docx          # تصليح Word عربي
+python3 items/05-arabic-pptx/skill/scripts/arabic_pptx.py عرضك.pptx          # تصليح PowerPoint عربي
+python3 items/07-official-letter/skill/scripts/kitab.py letter.json كتاب.docx  # كتاب رسمي
 ```
-بيعدّل اتجاه الفقرات وحجم الخط العربي والجداول، وما بيلمس النص.
+بيعدّلوا الاتجاه والخط والجداول، وما بيلمسوا النص.
 
 ## البنية
 ```
