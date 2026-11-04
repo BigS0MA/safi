@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="ar" dir="rtl"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>اجتماع ساعة ← جدول مهام جاهز · صافي</title>
-<meta name="description" content="الصق محضر أو تفريغ أي اجتماع، وخذ جدول مهام بأسماء وتواريخ، ورسالة متابعة جاهزة للإرسال.">
-<meta property="og:title" content="اجتماع ساعة ← جدول مهام جاهز · صافي"><meta property="og:description" content="الصق محضر أو تفريغ أي اجتماع، وخذ جدول مهام بأسماء وتواريخ، ورسالة متابعة جاهزة للإرسال.">
+<title>ملف Word عربي ما بيتخربط · صافي</title>
+<meta name="description" content="طلبت من ChatGPT أو Claude ملف Word بالعربي، وطلع الكلام مقلوب، ولازق عالشمال، والعربي أصغر من الإنجليزي؟ هون الحل لكل حالة.">
+<meta property="og:title" content="ملف Word عربي ما بيتخربط · صافي"><meta property="og:description" content="طلبت من ChatGPT أو Claude ملف Word بالعربي، وطلع الكلام مقلوب، ولازق عالشمال، والعربي أصغر من الإنجليزي؟ هون الحل لكل حالة.">
 <meta property="og:type" content="website"><meta property="og:image" content="https://safi.motasem.ai/og.png"><meta property="og:locale" content="ar_JO">
 <meta name="theme-color" content="#F2EFE8">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -20,6 +20,7 @@ body{background:var(--paper);background-image:linear-gradient(var(--grid) 1px,tr
   background-size:36px 36px;color:var(--ink);font-family:Plex,system-ui,sans-serif;font-size:18px;line-height:1.7;direction:rtl;min-height:100vh}
 a{color:inherit}
 bdi{unicode-bidi:isolate}
+.cmd{white-space:nowrap;font-weight:700}
 .wrap{max-width:760px;margin:0 auto;padding:0 16px}
 .top{display:flex;justify-content:space-between;align-items:center;padding:22px 0}
 .brand{font-family:Mono;font-weight:500;font-size:15px;direction:ltr;text-decoration:none}
@@ -41,7 +42,6 @@ section{margin:44px 0}
 .card .t{font-weight:700;font-size:21px;line-height:1.35}
 .card .h{font-size:16px;color:var(--mute);line-height:1.6}
 .card .m{display:flex;gap:8px;align-items:center;margin-top:6px;flex-wrap:wrap}
-.ok{font-size:13px;font-weight:700;color:var(--sig)}
 .num{font-family:Mono;font-weight:700;font-size:64px;line-height:1;color:var(--sig);direction:ltr;display:inline-block;margin-top:10px}
 .steps{list-style:none;counter-reset:s;display:grid;gap:12px}
 .steps li{counter-increment:s;display:flex;gap:14px;align-items:flex-start}
@@ -52,48 +52,33 @@ section{margin:44px 0}
 .pbox .bar span.ar{font-family:Plex;font-size:14px;letter-spacing:0;direction:rtl}
 .copy{font-family:Plex;font-weight:700;font-size:15px;background:var(--sig);color:var(--ink);border:0;padding:6px 16px;cursor:pointer;direction:rtl}
 .copy.done{background:var(--paper)}
-.pbox pre{font-family:Plex;font-size:17px;line-height:1.85;white-space:pre-wrap;word-wrap:break-word;padding:20px 20px 24px;direction:rtl;text-align:right}
+.pbox pre{unicode-bidi:plaintext;font-family:Plex;font-size:17px;line-height:1.85;white-space:pre-wrap;word-wrap:break-word;padding:20px 20px 24px;direction:rtl;text-align:right}
 mark{background:#FFE3D6;color:var(--ink);padding:0 3px;border-bottom:2px solid var(--sig)}
 .hint{font-size:15px;color:var(--mute);margin-top:14px}
 .tape{background:var(--card);padding:18px 22px;transform:rotate(-.6deg);box-shadow:0 2px 0 rgba(0,0,0,.06),0 10px 22px rgba(0,0,0,.07);font-size:17px}
 .tape b{display:block;font-size:15px;color:var(--sig);margin-bottom:4px}
-.proof{display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:center;border-top:2px solid var(--ink);padding-top:24px}
-.stamp{width:110px;height:110px;border:4px solid var(--sig);border-radius:50%;display:grid;place-items:center;color:var(--sig);font-weight:700;font-size:22px;transform:rotate(-9deg);outline:2px solid var(--sig);outline-offset:-12px}
-.proof p{font-size:16px}
-.proof .score{font-weight:700;font-size:18px}
-.pending{font-size:14px;color:var(--mute);margin-top:6px}
 .shot{max-width:100%;border:2px solid var(--ink);margin-top:16px;background:#fff}
 .nav{display:flex;justify-content:space-between;gap:12px;margin:48px 0 0;font-size:16px}
 .nav a{text-decoration:none;font-weight:700}
 footer{margin:64px 0 0;padding:24px 0 40px;border-top:2px solid var(--ink);font-size:14px;color:var(--mute);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 footer .brand{color:var(--ink)}
 .skip{position:absolute;right:-9999px}.skip:focus{right:16px;top:8px;background:#fff;padding:6px}
-@media (max-width:520px){body{font-size:17px}.nav{flex-direction:column}.nav a:last-child{align-self:flex-end}.card{grid-template-columns:1fr}.card .n{grid-row:auto;font-size:36px}.proof{grid-template-columns:1fr}.stamp{width:96px;height:96px;font-size:20px}}
+@media (max-width:520px){body{font-size:17px}.nav{flex-direction:column}.nav a:last-child{align-self:flex-end}.card{grid-template-columns:1fr}.card .n{grid-row:auto;font-size:36px}}
 </style></head>
 <body><a class="skip" href="#main">تخطّى للمحتوى</a>
 <div class="wrap">
 <header class="top"><a class="brand" href="/">motasem.ai</a><a class="chip ar" href="/" style="text-decoration:none">صافي</a></header>
-<main id="main"><span class="num">01</span> <span class="chip ar">برومبت</span><h1>اجتماع ساعة ← جدول مهام جاهز</h1><p class="lede">الصق محضر أو تفريغ أي اجتماع، وخذ جدول مهام بأسماء وتواريخ، ورسالة متابعة جاهزة للإرسال.</p><section><h2>كيف تستخدمه</h2><ol class="steps"><li>عبّي تاريخ الاجتماع بمكانه.</li><li>الصق التفريغ أو ملاحظاتك بآخر البرومبت.</li><li>قبل ما تبعت الرسالة، اقرأ قسم «أسئلة لازم تنسأل».</li></ol></section><section><div class="pbox"><div class="bar"><button class="copy" data-for="p1">انسخ</button><span>PROMPT</span></div><pre id="p1">حوّل الاجتماع اللي تحت لجدول مهام.
+<main id="main"><span class="num">01</span> <span class="chip ar">سكيل</span><h1>ملف <bdi>Word</bdi> عربي ما بيتخربط</h1><p class="lede">طلبت من <bdi>ChatGPT</bdi> أو <bdi>Claude</bdi> ملف <bdi>Word</bdi> بالعربي، وطلع الكلام مقلوب، ولازق عالشمال، والعربي أصغر من الإنجليزي؟ هون الحل لكل حالة.</p><section><h2>مع <bdi>Claude</bdi>: سكيل بتنزله مرة وحدة</h2><ol class="steps"><li><span>نزّل السكيل من تحت.</span></li><li><span>بـ <bdi>Claude</bdi>: الإعدادات ← <bdi>Capabilities</bdi> ← <bdi>Skills</bdi> ← ارفع الملف.</span></li><li><span>من هسّا، أي ملف <bdi>Word</bdi> عربي بيطلبه منه بيطلع مزبوط. وإذا عندك ملف خربان، ارفعه وقلّه «صلّحلي هالملف».</span></li></ol><p style="margin-top:22px"><a class="btn" href="arabic-word.zip" download>نزّل السكيل (.zip)</a></p></section><section><h2>مع <bdi>ChatGPT</bdi>: زيد هالبرومبت على طلبك</h2><div class="pbox"><div class="bar"><button class="copy" data-for="p1">انسخ</button><span class="ar">انسخه كامل</span></div><pre id="p1">اعملي ملف Word بالعربي عن: <mark>[شو بدك بالملف]</mark>
 
-القواعد:
-1. طلّع كل مهمة انتقرّرت: شو بالزبط، مين مسؤول، وإمتى.
-2. لا تخترع. إذا ما انذكر المسؤول أو الموعد، اكتب «غير محدد».
-3. إذا مهمة غيّرت صاحبها أو موعدها خلال الاجتماع، اعتمد آخر قرار.
-4. الاقتراحات اللي ما انقرّرت ما بتصير مهام. حطها بقسم لحالها.
-5. حوّل المواعيد النسبية (بكرا، الخميس، الأسبوع الجاي) لليوم والتاريخ، مثلاً «الخميس 12/11». تاريخ الاجتماع: <mark>[التاريخ]</mark>
-   إذا ما كتبت التاريخ، خلّي المواعيد زي ما انحكت ولا تخمّن.
-6. خلّي الأسماء والمصطلحات زي ما انحكت، وتجاهل الحكي الجانبي.
+مهم جداً، الملف لازم يفتح بالعربي صح. لما تكتبه بالكود:
+1. كل فقرة فيها عربي، اتجاهها من اليمين لليسار.
+2. الخط العربي بنفس حجم الخط العادي.
+3. لا تحط محاذاة يمين بالكود، خليها الافتراضية.
+4. الجداول بتبلش من اليمين.
+قبل ما تعطيني الملف، تأكد بالكود من الأربع نقاط.
 
-اكتب النتيجة بهالترتيب:
-1. جدول: # | المهمة | المسؤول | الموعد
-2. القرارات
-3. انحكى وما انقرّر
-4. أسئلة لازم تنسأل (أي إشي غامض)
-5. رسالة متابعة قصيرة للفريق، جاهزة للإرسال
-
-الاجتماع:
-<mark>[الصق التفريغ أو ملاحظاتك هون]</mark></pre></div><p class="hint">عبّي الأماكن الملوّنة، والباقي خليه زي ما هو.</p></section><section><div class="tape"><b>نصيحة</b>ما عندك تفريغ؟ سجّل الاجتماع بموبايلك، وحوّله لنص بأي أداة تفريغ، وبعدين الصقه هون.</div></section><section class="proof"><div class="stamp">مجرّب</div><div><p class="score">36/36 مقابل 29/36 للطلب العادي</p><p>جرّبه <bdi>Claude Opus 5.5</bdi> · 4 تشرين الثاني 2026</p><p class="pending">الجولة على ChatGPT وClaude المجاني جاية قبل النشر.</p><p><a href="https://github.com/BigS0MA/safi/blob/main/items/01-meeting-tasks/TEST.md">التجربة كاملة: المدخلات، النتائج، والحدود ↗</a></p></div></section><nav class="nav"><span></span><a href="/p/2/">02 خليه يسألك قبل ما يجاوب ←</a></nav></main>
-<footer><span>كل إشي هون انجرّب قبل ما ينحط، والتجربة كاملة مفتوحة. لقيت غلط؟ احكيلي على انستغرام.</span><a class="brand" href="https://github.com/BigS0MA/safi">GitHub ↗</a></footer>
+Technical: add w:bidi to every Arabic paragraph&#x27;s pPr; add w:rtl and set szCs = sz in its runs; remove jc=&quot;right&quot;; add w:bidiVisual to tblPr.</pre></div><p class="hint">عبّي الأماكن الملوّنة، والباقي خليه زي ما هو.</p></section><section><h2>عندك ملف خربان وبدك تصلّحه بإيدك؟ (<bdi>Word</bdi>)</h2><ol class="steps"><li><span><bdi>Ctrl + A</bdi> لتحديد كل الكلام.</span></li><li><span>اكبس زر «من اليمين لليسار» بقسم الفقرة (أو <bdi>Ctrl</bdi> مع <bdi>Shift</bdi> اللي عاليمين). هيك الجمل بترجع بترتيبها.</span></li><li><span><bdi>Ctrl + D</bdi>، وبقسم «<bdi>Complex scripts</bdi>» حط نفس حجم الخط اللي فوق. هيك العربي بيصير بحجم الإنجليزي.</span></li><li><span>زر «من اليمين لليسار» مش ظاهر؟ ضيف العربي كلغة تحرير: <bdi>File</bdi> ← <bdi>Options</bdi> ← <bdi>Language</bdi>.</span></li></ol></section><section><h2>ليش «محاذاة يمين» ما بتحل المشكلة؟</h2><p>المحاذاة بتنقل الكلام لليمين بس. ترتيب الجملة بيضل غلط، لأنه <bdi>Word</bdi> لسا فاكر الفقرة إنجليزي. اللي بيصلّحها هو «اتجاه الفقرة»، مش المحاذاة.</p></section><section><div class="tape"><b>نصيحة</b>نفس المشكلة بتصير بالبوربوينت والكانفا. هاي الحلقة الأولى من «العربي المخربط».</div></section><nav class="nav"><span></span><a href="/p/2/">02 بطّل تكتب برومبتات طويلة: 8 اختصارات بالعربي ←</a></nav></main>
+<footer><span>لقيت غلط أو عندك فكرة لعنصر جاي؟ احكيلي على انستغرام.</span><a class="brand" href="https://github.com/BigS0MA/safi">GitHub ↗</a></footer>
 </div><script>
 document.querySelectorAll('.copy').forEach(b=>b.addEventListener('click',async()=>{
   const t=document.getElementById(b.dataset.for).innerText;

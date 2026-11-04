@@ -7,7 +7,7 @@
 Each item lives in items/<NN>-<slug>/ with:
   item.json   n, slug, kind (prompt · trick · skill), title, hook, works_with, how[], tip, tested{by,date,score,status}
   prompt.md   the text people copy (or skill/ for a skill: SKILL.md + files, zipped at build time)
-  TEST.md     the full test (inputs, runs, scores, limits) — linked from the page, never hidden
+  TEST.md     internal test notes (inputs, runs, limits) — kept in the repo, not shown on the site
 Short links: /<n> → /p/<n>/ (the number printed on the carousel).
 """
 import html
@@ -21,7 +21,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 SITE = ROOT / "site"
 REPO = "https://github.com/BigS0MA/safi"
-KIND = {"prompt": "برومبت", "trick": "حيلة", "skill": "سكيل"}
+KIND = {"prompt": "برومبت", "trick": "حيلة", "skill": "سكيل", "block": "إعدادات"}
 MONTHS = ["كانون الثاني", "شباط", "آذار", "نيسان", "أيار", "حزيران", "تموز", "آب", "أيلول",
           "تشرين الأول", "تشرين الثاني", "كانون الأول"]
 
@@ -38,8 +38,9 @@ def e(s):
 def rich(s):
     """escape, keep Latin runs in order, «الـ AI» together."""
     s = e(s)
-    s = re.sub(r"(?<![&\w])([A-Za-z][A-Za-z0-9 .'’|/\-]*[A-Za-z0-9])", r"<bdi>\1</bdi>", s)
-    return re.sub(r"(الـ|ال) (<bdi>)", r"\1&nbsp;\2", s)
+    s = re.sub(r"(?<![&\w])([A-Za-z][A-Za-z0-9 .'’|/+\-]*[A-Za-z0-9])", r"<bdi>\1</bdi>", s)
+    s = re.sub(r"(الـ|ال) (<bdi>)", r"\1&nbsp;\2", s)
+    return re.sub(r"!([\u0600-\u06FF]+)", r'<bdi class="cmd" dir="rtl">!\1</bdi>', s)   # «!لخص» stays one unit
 
 
 def prompt_html(text):
@@ -59,6 +60,7 @@ body{background:var(--paper);background-image:linear-gradient(var(--grid) 1px,tr
   background-size:36px 36px;color:var(--ink);font-family:Plex,system-ui,sans-serif;font-size:18px;line-height:1.7;direction:rtl;min-height:100vh}
 a{color:inherit}
 bdi{unicode-bidi:isolate}
+.cmd{white-space:nowrap;font-weight:700}
 .wrap{max-width:760px;margin:0 auto;padding:0 16px}
 .top{display:flex;justify-content:space-between;align-items:center;padding:22px 0}
 .brand{font-family:Mono;font-weight:500;font-size:15px;direction:ltr;text-decoration:none}
@@ -80,7 +82,6 @@ section{margin:44px 0}
 .card .t{font-weight:700;font-size:21px;line-height:1.35}
 .card .h{font-size:16px;color:var(--mute);line-height:1.6}
 .card .m{display:flex;gap:8px;align-items:center;margin-top:6px;flex-wrap:wrap}
-.ok{font-size:13px;font-weight:700;color:var(--sig)}
 .num{font-family:Mono;font-weight:700;font-size:64px;line-height:1;color:var(--sig);direction:ltr;display:inline-block;margin-top:10px}
 .steps{list-style:none;counter-reset:s;display:grid;gap:12px}
 .steps li{counter-increment:s;display:flex;gap:14px;align-items:flex-start}
@@ -91,23 +92,18 @@ section{margin:44px 0}
 .pbox .bar span.ar{font-family:Plex;font-size:14px;letter-spacing:0;direction:rtl}
 .copy{font-family:Plex;font-weight:700;font-size:15px;background:var(--sig);color:var(--ink);border:0;padding:6px 16px;cursor:pointer;direction:rtl}
 .copy.done{background:var(--paper)}
-.pbox pre{font-family:Plex;font-size:17px;line-height:1.85;white-space:pre-wrap;word-wrap:break-word;padding:20px 20px 24px;direction:rtl;text-align:right}
+.pbox pre{unicode-bidi:plaintext;font-family:Plex;font-size:17px;line-height:1.85;white-space:pre-wrap;word-wrap:break-word;padding:20px 20px 24px;direction:rtl;text-align:right}
 mark{background:#FFE3D6;color:var(--ink);padding:0 3px;border-bottom:2px solid var(--sig)}
 .hint{font-size:15px;color:var(--mute);margin-top:14px}
 .tape{background:var(--card);padding:18px 22px;transform:rotate(-.6deg);box-shadow:0 2px 0 rgba(0,0,0,.06),0 10px 22px rgba(0,0,0,.07);font-size:17px}
 .tape b{display:block;font-size:15px;color:var(--sig);margin-bottom:4px}
-.proof{display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:center;border-top:2px solid var(--ink);padding-top:24px}
-.stamp{width:110px;height:110px;border:4px solid var(--sig);border-radius:50%;display:grid;place-items:center;color:var(--sig);font-weight:700;font-size:22px;transform:rotate(-9deg);outline:2px solid var(--sig);outline-offset:-12px}
-.proof p{font-size:16px}
-.proof .score{font-weight:700;font-size:18px}
-.pending{font-size:14px;color:var(--mute);margin-top:6px}
 .shot{max-width:100%;border:2px solid var(--ink);margin-top:16px;background:#fff}
 .nav{display:flex;justify-content:space-between;gap:12px;margin:48px 0 0;font-size:16px}
 .nav a{text-decoration:none;font-weight:700}
 footer{margin:64px 0 0;padding:24px 0 40px;border-top:2px solid var(--ink);font-size:14px;color:var(--mute);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
 footer .brand{color:var(--ink)}
 .skip{position:absolute;right:-9999px}.skip:focus{right:16px;top:8px;background:#fff;padding:6px}
-@media (max-width:520px){body{font-size:17px}.nav{flex-direction:column}.nav a:last-child{align-self:flex-end}.card{grid-template-columns:1fr}.card .n{grid-row:auto;font-size:36px}.proof{grid-template-columns:1fr}.stamp{width:96px;height:96px;font-size:20px}}
+@media (max-width:520px){body{font-size:17px}.nav{flex-direction:column}.nav a:last-child{align-self:flex-end}.card{grid-template-columns:1fr}.card .n{grid-row:auto;font-size:36px}}
 """
 
 JS = """
@@ -137,7 +133,7 @@ def page(title, desc, body, path="/"):
 <div class="wrap">
 <header class="top"><a class="brand" href="/">motasem.ai</a><a class="chip ar" href="/" style="text-decoration:none">صافي</a></header>
 <main id="main">{body}</main>
-<footer><span>كل إشي هون انجرّب قبل ما ينحط، والتجربة كاملة مفتوحة. لقيت غلط؟ احكيلي على انستغرام.</span><a class="brand" href="{REPO}">GitHub ↗</a></footer>
+<footer><span>لقيت غلط أو عندك فكرة لعنصر جاي؟ احكيلي على انستغرام.</span><a class="brand" href="{REPO}">GitHub ↗</a></footer>
 </div><script>{JS}</script></body></html>"""
 
 
@@ -158,39 +154,37 @@ def load_items():
 
 def item_page(it, prev, nxt):
     n, d = it["n"], it["_dir"]
-    t = it.get("tested", {})
     out = SITE / "p" / str(n)
     out.mkdir(parents=True, exist_ok=True)
     B = [f'<span class="num">{n:02d}</span> <span class="chip ar">{KIND.get(it["kind"], "")}</span>',
          f'<h1>{rich(it["title"])}</h1><p class="lede">{rich(it["hook"])}</p>']
     if it.get("how"):
-        B.append('<section><h2>كيف تستخدمه</h2><ol class="steps">' + "".join(f"<li>{rich(x)}</li>" for x in it["how"]) + "</ol></section>")
+        B.append(f'<section><h2>{rich(it.get("how_title", "كيف تستخدمه"))}</h2><ol class="steps">'
+                 + "".join(f"<li><span>{rich(x)}</span></li>" for x in it["how"]) + "</ol>")
+        if it["_skill"]:
+            z = out / f'{it["slug"]}.zip'
+            with zipfile.ZipFile(z, "w", zipfile.ZIP_DEFLATED) as zf:
+                for f in sorted((d / "skill").rglob("*")):
+                    if f.is_file() and "__pycache__" not in f.parts:
+                        zf.write(f, Path(it["slug"]) / f.relative_to(d / "skill"))
+            B.append(f'<p style="margin-top:22px"><a class="btn" href="{z.name}" download>نزّل السكيل (.zip)</a></p>')
+        B.append("</section>")
     if it["_prompt"]:
-        label = "<span>PROMPT</span>" if it["kind"] != "trick" else '<span class="ar">زيده بآخر طلبك</span>'
-        B.append(f'<section><div class="pbox"><div class="bar"><button class="copy" data-for="p{n}">انسخ</button>{label}</div>'
+        label = '<span class="ar">' + e(it.get("prompt_label", "انسخه كامل")) + "</span>"
+        head = f'<h2>{rich(it["prompt_title"])}</h2>' if it.get("prompt_title") else ""
+        B.append(f'<section>{head}<div class="pbox"><div class="bar"><button class="copy" data-for="p{n}">انسخ</button>{label}</div>'
                  f'<pre id="p{n}">{prompt_html(it["_prompt"])}</pre></div>'
                  + ('<p class="hint">عبّي الأماكن الملوّنة، والباقي خليه زي ما هو.</p>' if "[" in it["_prompt"] else "") + "</section>")
-    if it["_skill"]:
-        z = out / f'{it["slug"]}.zip'
-        with zipfile.ZipFile(z, "w", zipfile.ZIP_DEFLATED) as zf:
-            for f in sorted((d / "skill").rglob("*")):
-                if f.is_file():
-                    zf.write(f, Path(it["slug"]) / f.relative_to(d / "skill"))
-        B.append(f'<section><a class="btn" href="{z.name}" download>نزّل السكيل (.zip)</a>'
-                 '<p class="hint">بـ Claude: الإعدادات ← Capabilities ← Skills ← ارفع الملف.</p></section>')
-    if it.get("tip"):
-        B.append(f'<section><div class="tape"><b>نصيحة</b>{rich(it["tip"])}</div></section>')
+    for sec in it.get("sections", []):
+        inner = (('<ol class="steps">' + "".join(f"<li><span>{rich(x)}</span></li>" for x in sec["steps"]) + "</ol>") if sec.get("steps")
+                 else f'<p>{rich(sec.get("text", ""))}</p>')
+        B.append(f'<section><h2>{rich(sec["title"])}</h2>{inner}</section>')
     shot = next((f for f in d.glob("result.*") if f.suffix.lower() in (".png", ".jpg", ".webp")), None)
-    img = ""
     if shot:
         shutil.copy(shot, out / shot.name)
-        img = f'<img class="shot" src="{shot.name}" alt="لقطة من نتيجة التجربة الحقيقية" loading="lazy">'
-    pending = ('<p class="pending">الجولة على ChatGPT وClaude المجاني جاية قبل النشر.</p>'
-               if t.get("status") == "pending-motasem" else "")
-    B.append(f'<section class="proof"><div class="stamp">مجرّب</div><div>'
-             f'<p class="score">{rich(t.get("score", ""))}</p>'
-             f'<p>جرّبه {rich(t.get("by", ""))} · {ar_date(t["date"])}</p>{pending}'
-             f'<p><a href="{REPO}/blob/main/items/{d.name}/TEST.md">التجربة كاملة: المدخلات، النتائج، والحدود ↗</a></p></div></section>{img}')
+        B.append(f'<section><img class="shot" src="{shot.name}" alt="مثال على النتيجة" loading="lazy"></section>')
+    if it.get("tip"):
+        B.append(f'<section><div class="tape"><b>نصيحة</b>{rich(it["tip"])}</div></section>')
     nav = '<nav class="nav">' + (f'<a href="/p/{prev["n"]}/">→ {prev["n"]:02d} {rich(prev["title"])}</a>' if prev else "<span></span>") \
         + (f'<a href="/p/{nxt["n"]}/">{nxt["n"]:02d} {rich(nxt["title"])} ←</a>' if nxt else '<a href="/">كل المكتبة ←</a>') + "</nav>"
     B.append(nav)
@@ -201,13 +195,13 @@ def index_page(items):
     cards = "".join(
         f'<a class="card" href="/p/{it["n"]}/"><span class="n">{it["n"]:02d}</span>'
         f'<span class="t">{rich(it["title"])}</span><span class="h">{rich(it["hook"])}</span>'
-        f'<span class="m"><span class="chip ar ink">{KIND.get(it["kind"], "")}</span><span class="ok">✓ مجرّب · {ar_date(it["tested"]["date"])}</span></span></a>'
+        f'<span class="m"><span class="chip ar ink">{KIND.get(it["kind"], "")}</span></span></a>'
         for it in items)
-    body = (f'<h1>كل إشي هون <span class="hot">مجرّب</span>.</h1>'
-            '<p class="lede">برومبتات وسكيلز لشغلك، من كاروسيلات motasem.ai. كل وحدة جرّبناها على مدخلات حقيقية الشكل، ومعها النتيجة وحدودها.</p>'
+    body = ('<h1>انسخ، نزّل، <span class="hot">واشتغل</span>.</h1>'
+            '<p class="lede">برومبتات وسكيلز لشغلك بالعربي، من كاروسيلات motasem.ai. كل وحدة بكبسة نسخ أو تنزيل.</p>'
             '<form class="go" id="go"><label for="gon">عندك رقم من كاروسيل؟</label><input id="gon" inputmode="numeric" placeholder="01" aria-label="رقم الكاروسيل"><button>افتح</button></form>'
             f'<section class="list" aria-label="المكتبة">{cards}</section>')
-    (SITE / "index.html").write_text(page("صافي · motasem.ai", "برومبتات وسكيلز مجرّبة لشغلك، كل وحدة بنتيجتها.", body), encoding="utf-8")
+    (SITE / "index.html").write_text(page("صافي · motasem.ai", "برومبتات وسكيلز لشغلك بالعربي، بكبسة نسخ أو تنزيل.", body), encoding="utf-8")
 
 
 def main():
